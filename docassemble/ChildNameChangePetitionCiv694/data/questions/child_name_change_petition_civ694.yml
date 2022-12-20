@@ -1,0 +1,546 @@
+---
+include:
+  - docassemble.AssemblyLine:assembly_line.yml
+  - docassemble.AKA2JBranding:custom_organization.yml
+---
+metadata:
+  title: |
+    Child name change petition civ694
+  short title: |
+    Child name change petition civ694
+  tags:
+    - FA-00-00-00-00
+  authors:
+    - Caroline Robinson
+---
+mandatory: True
+comment: |
+  Global interview metadata
+variable name: interview_metadata["child_name_change_petition_civ694"]
+data:
+  al_weaver_version: "1.8.0"
+  generated on: "2022-12-20"
+  title: >-
+    Child name change petition civ694
+  short title: >-
+    Child name change petition civ694
+  description: |-
+    Child name change petition civ694
+  allowed courts: 
+    - "Other Court"
+  categories:
+    - "FA-00-00-00-00"
+  typical role: "plaintiff"
+  generate download screen: True
+---
+code: |
+  interview_metadata['main_interview_key'] =  'child_name_change_petition_civ694'
+---
+code: |
+  # This controls the default country and list of states in address field questions
+  AL_DEFAULT_COUNTRY = "US"
+---
+code: |
+  # This controls the default state in address field questions
+  AL_DEFAULT_STATE = "AK"
+---
+code: |
+  github_repo_name =  'docassemble-ChildNameChangePetitionCiv694'
+---
+code: |
+  interview_short_title = "Ask the court for a Child name change petition civ694"
+---
+code: |
+  al_form_type = "starts_case" 
+---
+objects:
+  - users1_legal: ALPeopleList.using(ask_number=True,target_number=1)
+  - users1_new: ALPeopleList.using(ask_number=True,target_number=1)
+  - users1_birth: ALPeopleList.using(ask_number=True,target_number=1)
+  - users: ALPeopleList.using(ask_number=True,target_number=1)
+---
+sections:
+  - review_child_name_change_petition_civ694: Review your answers
+---
+#################### Interview order #####################
+comment: |
+  Controls order and branching logic for questions specific to this form
+id: interview_order_child_name_change_petition_civ694
+code: |
+  # Set the allowed courts for this interview
+  allowed_courts = interview_metadata["child_name_change_petition_civ694"]["allowed courts"]
+  nav.set_section("review_child_name_change_petition_civ694")
+  user_role = "plaintiff"
+  user_ask_role = "plaintiff"
+  guardian_yes
+  same_as_birth_certificate
+  non_petitioning_parents
+  court_city
+  agree_email_yes
+  set_progress(14)
+  notarization_place
+  petitioners.gather()
+  petitioners[0].phone_number
+  petitioners[0].address.address
+  petitioners[0].email
+  set_progress(28)
+  users1_legal.gather()
+  users[0].birthdate
+  set_progress(42)
+  users1_birth.gather()
+  users1_new.gather()
+  set_progress(56)
+  signature_date
+  interview_order_child_name_change_petition_civ694 = True
+---
+###################### Main order ######################
+comment: |
+  This block includes the logic for standalone interviews.
+  Delete mandatory: True to include in another interview
+mandatory: True
+code: |
+  al_intro_screen
+  child_name_change_petition_civ694_intro
+  interview_order_child_name_change_petition_civ694
+  signature_date
+  # Store anonymous data for analytics / statistics
+  store_variables_snapshot(
+      persistent=True,
+      data={
+          "zip": showifdef("users[0].address.zip"),
+          "reached_interview_end": True,
+      },
+  )
+  child_name_change_petition_civ694_download
+---
+comment: |
+  This question is used to introduce your interview. Please customize
+id: Child_name_change_petition_civ694
+continue button field: child_name_change_petition_civ694_intro
+question: |
+  Child name change petition civ694
+subquestion: |
+  Child name change petition civ694
+---
+id: Petitioner info
+question: |
+  Petitioner info
+fields:
+  - "Guardian": guardian_yes
+    datatype: yesno
+  - "Parent": parent_yes
+    datatype: yesno
+---
+id: Case
+question: |
+  Case
+fields:
+  - "Court city": court_city
+    maxlength: 21
+  - "Case number": case_number
+    maxlength: 25
+---
+id: Name
+question: |
+  Name
+fields:
+  - "Same as birth certificate": same_as_birth_certificate
+    datatype: yesno
+  - "Other reason not attached": other_reason_not_attached_yes
+    datatype: yesno
+  - "Other reason not attached": other_reason_not_attached
+    maxlength: 51
+  - "Reason for name change": reason_for_name_change
+    input type: area
+---
+id: Parent
+question: |
+  Parent
+fields:
+  - "Non petitioning parents": non_petitioning_parents
+    maxlength: 38
+  - "Parent deceased": parent_deceased_yes
+    datatype: yesno
+  - "Parent rights terminated": parent_rights_terminated_yes
+    datatype: yesno
+  - "Date of parent rights terminated": parent_rights_terminated_date
+    datatype: date
+  - "Parent rights terminated court": parent_rights_terminated_court
+    maxlength: 18
+---
+id: Consent
+question: |
+  Consent
+subquestion: |
+  You must consent.
+fields:
+  - "Agree email": agree_email_yes
+    datatype: yesno
+  - "Consent attached": consent_attached
+    datatype: yesno
+  - "Consent attached not necessary": consent_attached_not_necessary
+    datatype: yesno
+---
+id: To delete
+question: |
+  To delete
+subquestion: |
+  We will delete these fields and questions
+fields:
+  - "Notarization place": notarization_place
+    maxlength: 29
+  - "Date of notarization": notarization_date
+    datatype: date
+  - "Notary public": notary_public
+    input type: area
+    maxlength: 114
+  - "Date of notary expiration": notary_expiration_date
+    datatype: date
+---
+id: preview child_name_change_petition_civ694
+question: |
+  Preview your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page.   
+  
+  ${ al_court_bundle.as_pdf(key='preview') }
+
+  Click the image to open it in a new tab. Click the "Edit answers" button
+  to edit your answers.
+
+  ${ action_button_html(url_action('review_child_name_change_petition_civ694'), label='Edit answers', color='info') }
+  
+  Remember to come back to this window to continue and sign your form.
+continue button field: child_name_change_petition_civ694_preview_question    
+---
+code: |
+  signature_fields = ['petitioners[0].signature']
+---
+code: |
+  # This is a placeholder for the addresses that will be searched
+  # for matching address to court. Edit if court venue is based on 
+  # a different address than the user's
+  [user.address.address for user in users.complete_elements()]
+  addresses_to_search = [user.address for user in users.complete_elements()]
+---
+id: child name change petition civ694 review screen
+event: review_child_name_change_petition_civ694
+question: |
+  Review your answers
+review:
+  - Edit: petitioners.revisit
+    button: |
+      **Petitioners**
+
+      % for item in petitioners:
+        * ${ item }
+      % endfor
+  - Edit: agree_email_yes
+    button: |
+      **Agree email**:
+      ${ word(yesno(agree_email_yes)) }
+  - Edit: court_city
+    button: |
+      **Court city**:
+      ${ court_city }
+  - Edit: users1_legal.revisit
+    button: |
+      **Users1 legal**
+
+      % for item in users1_legal:
+        * ${ item }
+      % endfor
+  - Edit: users.revisit
+    button: |
+      **Users**
+
+      % for item in users:
+        * ${ item }
+      % endfor
+  - Edit: case_number
+    button: |
+      **Case number**:
+      ${ case_number }
+  - Edit: same_as_birth_certificate
+    button: |
+      **Same as birth certificate**:
+      ${ word(yesno(same_as_birth_certificate)) }
+  - Edit: users1_birth.revisit
+    button: |
+      **Users1 birth**
+
+      % for item in users1_birth:
+        * ${ item }
+      % endfor
+  - Edit: users1_new.revisit
+    button: |
+      **Users1 new**
+
+      % for item in users1_new:
+        * ${ item }
+      % endfor
+  - Edit: guardian_yes
+    button: |
+      **Guardian**:
+      ${ word(yesno(guardian_yes)) }
+  - Edit: parent_yes
+    button: |
+      **Parent**:
+      ${ word(yesno(parent_yes)) }
+  - Edit: non_petitioning_parents
+    button: |
+      **Non petitioning parents**:
+      ${ non_petitioning_parents }
+  - Edit: consent_attached
+    button: |
+      **Consent attached**:
+      ${ word(yesno(consent_attached)) }
+  - Edit: consent_attached_not_necessary
+    button: |
+      **Consent attached not necessary**:
+      ${ word(yesno(consent_attached_not_necessary)) }
+  - Edit: parent_deceased_yes
+    button: |
+      **Parent deceased**:
+      ${ word(yesno(parent_deceased_yes)) }
+  - Edit: parent_rights_terminated_yes
+    button: |
+      **Parent rights terminated**:
+      ${ word(yesno(parent_rights_terminated_yes)) }
+  - Edit: parent_rights_terminated_date
+    button: |
+      **Date of parent rights terminated**:
+      ${ parent_rights_terminated_date }
+  - Edit: parent_rights_terminated_court
+    button: |
+      **Parent rights terminated court**:
+      ${ parent_rights_terminated_court }
+  - Edit: other_reason_not_attached_yes
+    button: |
+      **Other reason not attached**:
+      ${ word(yesno(other_reason_not_attached_yes)) }
+  - Edit: other_reason_not_attached
+    button: |
+      **Other reason not attached**:
+      ${ other_reason_not_attached }
+  - Edit: reason_for_name_change
+    button: |
+      **Reason for name change**:
+      > ${ single_paragraph(reason_for_name_change) }
+  - Edit: signature_date
+    button: |
+      **Date of signature**:
+      ${ signature_date }
+  - Edit: notarization_place
+    button: |
+      **Notarization place**:
+      ${ notarization_place }
+  - Edit: notarization_date
+    button: |
+      **Date of notarization**:
+      ${ notarization_date }
+  - Edit: notary_public
+    button: |
+      **Notary public**:
+      > ${ single_paragraph(notary_public) }
+  - Edit: notary_expiration_date
+    button: |
+      **Date of notary expiration**:
+      ${ notary_expiration_date }
+---
+continue button field: petitioners.revisit
+question: |
+  Edit petitioners
+subquestion: |
+  ${ petitioners.table }
+
+  ${ petitioners.add_action() }
+---
+table: petitioners.table
+rows: petitioners
+columns:
+  - Name: |
+      row_item.name.full() if defined("row_item.name.first") else ""
+  - Phone number: |
+      row_item.phone_number if defined("row_item.phone_number") else ""
+  - Address: |
+      row_item.address.block() if defined("row_item.address.address") else ""
+  - Email: |
+      row_item.email if defined("row_item.email") else ""
+  - Signature: |
+      row_item.signature if defined("row_item.signature") else ""
+edit:
+  - name.first
+  - phone_number
+  - address.address
+  - email
+  - signature
+confirm: True
+
+---
+continue button field: users1_legal.revisit
+question: |
+  Edit users1_legal
+subquestion: |
+  ${ users1_legal.table }
+
+  ${ users1_legal.add_action() }
+---
+table: users1_legal.table
+rows: users1_legal
+columns:
+  - Name: |
+      row_item.name.full() if defined("row_item.name.last") else ""
+edit:
+  - name.last
+confirm: True
+
+---
+continue button field: users.revisit
+question: |
+  Edit users
+subquestion: |
+  ${ users.table }
+
+  ${ users.add_action() }
+---
+table: users.table
+rows: users
+columns:
+  - Birthdate: |
+      row_item.birthdate if defined("row_item.birthdate") else ""
+edit:
+  - birthdate
+confirm: True
+
+---
+continue button field: users1_birth.revisit
+question: |
+  Edit users1_birth
+subquestion: |
+  ${ users1_birth.table }
+
+  ${ users1_birth.add_action() }
+---
+table: users1_birth.table
+rows: users1_birth
+columns:
+  - Name: |
+      row_item.name.full() if defined("row_item.name.last") else ""
+edit:
+  - name.last
+confirm: True
+
+---
+continue button field: users1_new.revisit
+question: |
+  Edit users1_new
+subquestion: |
+  ${ users1_new.table }
+
+  ${ users1_new.add_action() }
+---
+table: users1_new.table
+rows: users1_new
+columns:
+  - Name: |
+      row_item.name.full() if defined("row_item.name.last") else ""
+edit:
+  - name.last
+confirm: True
+
+---
+id: download child_name_change_petition_civ694
+event: child_name_change_petition_civ694_download
+question: |
+  All done
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Edit answers" button to fix any mistakes.
+
+  ${ action_button_html(url_action('review_child_name_change_petition_civ694'), label='Edit answers', color='info') }
+  
+  
+  ${ al_user_bundle.download_list_html() }
+  
+
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
+
+progress: 100
+---
+# ALDocument objects specify the metadata for each template
+objects:
+  - child_name_change_petition_civ694_Post_interview_instructions: ALDocument.using(title="Instructions", filename="child_name_change_petition_civ694_next_steps.docx", enabled=True, has_addendum=False)
+  - child_name_change_petition_civ694_attachment: ALDocument.using(title="Child name change petition civ694", filename="child_name_change_petition_civ694", enabled=True, has_addendum=True, default_overflow_message=AL_DEFAULT_OVERFLOW_MESSAGE)
+---
+# Bundles group the ALDocuments into separate downloads, such as for court and for the user
+objects:
+  - al_user_bundle: ALDocumentBundle.using(elements=[child_name_change_petition_civ694_Post_interview_instructions, child_name_change_petition_civ694_attachment], filename="child_name_change_petition_civ694", title="All forms to download for your records", enabled=True)
+  - al_court_bundle: ALDocumentBundle.using(elements=[child_name_change_petition_civ694_attachment],  filename="child_name_change_petition_civ694", title="All forms to deliver to court", enabled=True)
+---
+# Each attachment defines a key in an ALDocument. We use `i` as the placeholder here so the same template is 
+# used for "preview" and "final" keys, and logic in the template checks the value of 
+# `i` to show or hide the user's signature
+attachment:
+  name: Post-interview-Instructions
+  filename: child_name_change_petition_civ694_next_steps
+  docx template file: child_name_change_petition_civ694_next_steps.docx
+  variable name: child_name_change_petition_civ694_Post_interview_instructions[i]
+  skip undefined: True
+---
+attachment:
+  name: child name change petition civ694
+  filename: child_name_change_petition_civ694
+  variable name: child_name_change_petition_civ694_attachment[i]
+  skip undefined: True
+  pdf template file: child_name_change_petition_civ694.pdf
+  fields:
+      - "petitioners1_name__1": ${ petitioners[0] }
+      - "petitioners1_name__2": ${ petitioners[0] }
+      - "petitioners1_name__3": ${ petitioners[0] }
+      - "petitioners1_phone_number": ${ petitioners[0].phone_number }
+      - "petitioners1_address_on_one_line": ${ petitioners[0].address.on_one_line() }
+      - "petitioners1_email": ${ petitioners[0].email }
+      - "agree_email_yes": ${ agree_email_yes }
+      - "court_city": ${ court_city }
+      - "users1_legal_name": ${ users1_legal[0] }
+      - "users1_birthdate": ${ users[0].birthdate.format() }
+      - "case_number": ${ case_number }
+      - "users1_legal_name_first": ${ users1_legal[0].name.first }
+      - "users1_legal_name_middle": ${ users1_legal[0].name.middle }
+      - "users1_legal_name_last": ${ users1_legal[0].name.last }
+      - "same_as_birth_certificate_yes": ${ same_as_birth_certificate }
+      - "same_as_birth_certificate_no": ${ not same_as_birth_certificate }
+      - "users1_birth_name_first": ${ users1_birth[0].name.first }
+      - "users1_birth_name_middle": ${ users1_birth[0].name.middle }
+      - "users1_birth_name_last": ${ users1_birth[0].name.last }
+      - "users1_new_name_first": ${ users1_new[0].name.first }
+      - "users1_new_name_middle": ${ users1_new[0].name.middle }
+      - "users1_new_name_last": ${ users1_new[0].name.last }
+      - "guardian_yes": ${ guardian_yes }
+      - "parent_yes": ${ parent_yes }
+      - "non_petitioning_parents": ${ non_petitioning_parents }
+      - "consent_attached_yes": ${ consent_attached }
+      - "consent_attached_no": ${ not consent_attached }
+      - "consent_attached_not_necessary": ${ consent_attached_not_necessary }
+      - "parent_deceased_yes": ${ parent_deceased_yes }
+      - "parent_rights_terminated_yes": ${ parent_rights_terminated_yes }
+      - "parent_rights_terminated_date": ${ parent_rights_terminated_date.format() }
+      - "parent_rights_terminated_court": ${ parent_rights_terminated_court }
+      - "other_reason_not_attached_yes": ${ other_reason_not_attached_yes }
+      - "other_reason_not_attached": ${ other_reason_not_attached }
+      - "reason_for_name_change": ${ child_name_change_petition_civ694.safe_value("reason_for_name_change") }
+      - "petitioners1_signature": ${ petitioners[0].signature_if_final(i) }
+      - "signature_date": ${ signature_date }
+      - "notarization_place": ${ notarization_place }
+      - "notarization_date": ${ notarization_date.format() }
+      - "notary_public": ${ notary_public }
+      - "notary_expiration_date": ${ notary_expiration_date.format() }
+---
+code: |
+  child_name_change_petition_civ694_attachment.overflow_fields["reason_for_name_change"].overflow_trigger = 1008
+  child_name_change_petition_civ694_attachment.overflow_fields["reason_for_name_change"].label = "Reason for name change"
+  child_name_change_petition_civ694_attachment.overflow_fields.gathered = True
+
+
